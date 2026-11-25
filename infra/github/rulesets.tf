@@ -33,8 +33,7 @@ resource "github_repository_ruleset" "main" {
 
     # Commit signing isn't required here on purpose: with it on, GitHub only
     # lets a PR's own author squash-merge it, which would block merging
-    # Dependabot's PRs. You still sign your own commits locally (setup guide,
-    # step 4), so they show as "Verified".
+    # Dependabot's PRs. You still sign your own commits locally, so they show as "Verified".
 
     pull_request {
       # 0 approvals: you can't approve your own PR, and you're the only
