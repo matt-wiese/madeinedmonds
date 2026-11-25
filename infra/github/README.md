@@ -12,7 +12,7 @@ Terraform that manages this repository's own GitHub settings.
 ## Running it
 
 ```sh
-# In a terminal where GITHUB_TOKEN is set (setup guide, step 8)
+# In a terminal where GITHUB_TOKEN is set using 'read -rs GITHUB_TOKEN && export GITHUB_TOKEN'
 terraform -chdir=infra/github init
 terraform -chdir=infra/github plan
 terraform -chdir=infra/github apply

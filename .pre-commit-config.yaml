@@ -1,5 +1,5 @@
 # Quick checks that run on your machine every time you `git commit`, so
-# problems are caught before CI. Setup guide, step 7.
+# problems are caught before CI.
 #
 #   pre-commit install        # once per clone
 #   pre-commit autoupdate     # bump the hook versions below
