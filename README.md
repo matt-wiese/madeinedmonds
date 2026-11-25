@@ -4,7 +4,7 @@ Handmade wooden pet urns from Edmonds, Washington, and the production stack behi
 
 [![CI](https://github.com/matt-wiese/madeinedmonds/actions/workflows/ci.yml/badge.svg)](https://github.com/matt-wiese/madeinedmonds/actions/workflows/ci.yml)
 
-> **Status:** laying the foundations (December 2026). Nothing is for sale yet.
+> **Status:** GitHub setup now compeleted (December 2026). Nothing is for sale yet.
 
 ## What's in this repository
 
