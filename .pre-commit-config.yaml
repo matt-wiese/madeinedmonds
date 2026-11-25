@@ -1,0 +1,37 @@
+# Quick checks that run on your machine every time you `git commit`, so
+# problems are caught before CI. Setup guide, step 7.
+#
+#   pre-commit install        # once per clone
+#   pre-commit autoupdate     # bump the hook versions below
+#   pre-commit run --all-files
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=500"] # Product photos go to S3, not git.
+      - id: detect-private-key
+      - id: no-commit-to-branch # Stops accidental commits on main; work on a branch.
+        args: ["--branch", "main"]
+
+  # Scans staged changes for secrets (API keys, tokens) before they're committed.
+  # GitHub push protection is the second line of defense.
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.4
+    hooks:
+      - id: gitleaks
+
+  # Uses the terraform already installed on your machine.
+  - repo: local
+    hooks:
+      - id: terraform-fmt
+        name: terraform fmt
+        entry: terraform fmt -recursive
+        language: system
+        pass_filenames: false
+        files: \.tf$

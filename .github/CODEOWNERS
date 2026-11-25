@@ -1,0 +1,10 @@
+# Code owners are asked to review pull requests that touch their files.
+# Solo project for now, so that's you; it mainly makes sure you're
+# automatically added as reviewer on Dependabot's PRs.
+#
+# The setup guide (step 6a) puts your username in below.
+# Later rules override earlier ones for matching paths.
+
+*           @matt-wiese
+/infra/     @matt-wiese
+/.github/   @matt-wiese

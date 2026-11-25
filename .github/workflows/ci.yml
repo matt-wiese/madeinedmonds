@@ -1,0 +1,74 @@
+# CI: runs on every pull request and every push to main.
+#
+# The `ci-passed` job at the bottom is the only check the protect-main ruleset
+# requires (infra/github/rulesets.tf). To add a new check later (app tests, a
+# Docker build), add a job and list it in `ci-passed.needs`. The ruleset
+# never has to change.
+
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch: # Lets you run it by hand from the Actions tab.
+
+# Least privilege: jobs can read the code and nothing else. A job that needs
+# more (for example, AWS credentials later) asks for it in its own block.
+permissions:
+  contents: read
+
+# A newer push to the same branch cancels the run still going for the old one.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  terraform:
+    name: terraform
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false # The job never pushes, so don't keep a token around.
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v4
+        with:
+          terraform_version: "1.17.2" # Keep in step with your local version (`terraform version`).
+          terraform_wrapper: false
+
+      - name: Check formatting
+        # Fails if any .tf file isn't formatted. Fix locally with: terraform fmt -recursive
+        run: terraform fmt -check -recursive -diff
+
+      - name: Validate every Terraform root module
+        # A root module is any folder under infra/ that has a versions.tf.
+        # -backend=false: validation needs no state and no credentials.
+        run: |
+          set -euo pipefail
+          for dir in $(find infra -name versions.tf -exec dirname {} \; | sort -u); do
+            echo "::group::terraform validate $dir"
+            terraform -chdir="$dir" init -backend=false -input=false
+            terraform -chdir="$dir" validate
+            echo "::endgroup::"
+          done
+
+  # Gate job: the single required check. It runs even if a job above failed
+  # (`if: always()`), and fails unless every job in `needs` succeeded.
+  ci-passed:
+    name: ci-passed
+    if: always()
+    needs: [terraform]
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Fail if any required job failed or was cancelled
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: |
+          echo "One or more required jobs did not succeed: ${{ toJSON(needs) }}"
+          exit 1
+      - name: All required jobs passed
+        run: echo "All required jobs passed."

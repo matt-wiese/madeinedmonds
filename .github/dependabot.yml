@@ -1,0 +1,34 @@
+# Dependabot version updates: opens a pull request when something we depend on
+# has a new release. Each PR runs through CI like any other change.
+#
+# Security fixes are switched on separately, in infra/github/repository.tf.
+# Not covered here: the Terraform CLI version pinned in .github/workflows/ci.yml
+# and on your machine. Bump those by hand every month or two.
+
+version: 2
+updates:
+  # Actions used in .github/workflows/*.yml (actions/checkout, ...)
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Los_Angeles
+    commit-message:
+      prefix: ci
+    groups:
+      # One PR for all action updates instead of one PR each.
+      github-actions:
+        patterns: ["*"]
+
+  # Terraform providers in infra/github (version constraint and lock file)
+  - package-ecosystem: terraform
+    directory: /infra/github
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: America/Los_Angeles
+    commit-message:
+      prefix: infra

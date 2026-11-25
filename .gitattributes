@@ -1,0 +1,13 @@
+# Store text files with LF line endings, whatever OS edits them
+# (prevents whole-file diffs caused only by Windows line endings).
+* text=auto eol=lf
+
+# Binary files: never touch line endings or try to diff them.
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.webp binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+*.zip  binary

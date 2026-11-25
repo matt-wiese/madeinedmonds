@@ -1,0 +1,45 @@
+# --- Terraform -----------------------------------------------------------------
+# Provider downloads (recreated by `terraform init`)
+.terraform/
+# State can contain secrets and must never be committed. It lives locally
+# until the S3 backend is set up.
+*.tfstate
+*.tfstate.*
+# Saved plans can contain secrets too.
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+# Secrets never go in .tfvars files, but these names catch the usual mistakes.
+*.secret.tfvars
+*.local.tfvars
+# Note: .terraform.lock.hcl IS committed. It pins provider checksums.
+
+# --- Node / front end (from January) --------------------------------------------
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+npm-debug.log*
+
+# --- Environment files and keys ---------------------------------------------------
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Operating system and editors ------------------------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
