@@ -11,7 +11,6 @@ Handmade wooden pet urns from Edmonds, Washington, and the production stack behi
 | Path | What it is |
 |---|---|
 | `infra/github/` | Terraform that manages this repository's own settings: branch rules, deployment environments, Actions permissions, security features |
-| `docs/setup/` | Step-by-step setup guides, numbered in the order they were done |
 | `docs/adr/` | Architecture decision records: what was decided, and why |
 | `.github/` | CI workflow, Dependabot, pull request template, code owners |
 
