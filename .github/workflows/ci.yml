@@ -30,7 +30,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out the code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           persist-credentials: false # The job never pushes, so don't keep a token around.
 
